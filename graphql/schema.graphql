@@ -45,6 +45,7 @@ type Query {
   login(username: String!, password: String!): UserToken
   getCollections: [Collection]
   getCollection(id: ID!): CollectionWithCourses
+  getCourse(id: ID!): Course
 }
 
 type Mutation {

@@ -5,6 +5,7 @@ import register from "./mutations/register";
 import updateCourse from "./mutations/updateCourse";
 import getCollection from "./queries/getCollection";
 import getCollections from "./queries/getCollections";
+import getCourse from "./queries/getCourse";
 import login from "./queries/login";
 
 const Mutation = {
@@ -19,6 +20,7 @@ const Query = {
   login,
   getCollections,
   getCollection,
+  getCourse,
 };
 
 export { Mutation, Query };
