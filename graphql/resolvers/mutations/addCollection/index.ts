@@ -15,12 +15,22 @@ const addCollection = async (_, payload: AddCollectionPayload) => {
   }
 
   try {
-    const collection = await prisma.collection.create({
+    const collection = await prisma.collection.findUnique({
+      where: {
+        name: payload.name,
+      },
+    });
+
+    if (collection) {
+      throw new Error(`Collection name '${payload.name}' already exists.`);
+    }
+
+    const newCollection = await prisma.collection.create({
       data: {
         name: payload.name,
       },
     });
-    return collection.id;
+    return newCollection.id;
   } catch (e) {
     handleError(e);
   }
