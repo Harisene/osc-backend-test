@@ -3,6 +3,7 @@ import { z } from "zod";
 import prisma from "../../../../prisma";
 import generateToken from "../../../../utils/generateToken";
 import { RegisterPayload } from "./register.model";
+import handleError from "../../../../utils/handleError";
 
 const schema = z.object({
   username: z.string().min(1, "Username is required."),
@@ -16,31 +17,35 @@ const register = async (_, payload: RegisterPayload) => {
     throw new Error(validation.error.errors[0].message);
   }
 
-  const user = await prisma.user.findFirst({
-    where: {
-      name: payload.username,
-    },
-  });
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        name: payload.username,
+      },
+    });
 
-  if (user) {
-    throw new Error("User already exists");
+    if (user) {
+      throw new Error("User already exists");
+    }
+
+    const hashedPassword = await bcrypt.hash(payload.password, 10);
+
+    const newUser = await prisma.user.create({
+      data: {
+        name: payload.username,
+        password: hashedPassword,
+      },
+    });
+
+    const token = generateToken({ id: newUser.id, username: newUser.name });
+
+    return {
+      id: newUser.id,
+      token,
+    };
+  } catch (e) {
+    handleError(e);
   }
-
-  const hashedPassword = await bcrypt.hash(payload.password, 10);
-
-  const newUser = await prisma.user.create({
-    data: {
-      name: payload.username,
-      password: hashedPassword,
-    },
-  });
-
-  const token = generateToken({ id: newUser.id, username: newUser.name });
-
-  return {
-    id: newUser.id,
-    token,
-  };
 };
 
 export default register;
