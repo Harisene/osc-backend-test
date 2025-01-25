@@ -1,6 +1,7 @@
 import { z } from "zod";
 import prisma from "../../../../prisma";
 import handleError from "../../../../utils/handleError";
+import inputValidation from "../../../../utils/inputValidation";
 import { AddCollectionPayload } from "./model";
 
 const schema = z.object({
@@ -8,13 +9,8 @@ const schema = z.object({
 });
 
 const addCollection = async (_, payload: AddCollectionPayload) => {
-  const validation = schema.safeParse(payload);
-
-  if (!validation.success) {
-    throw new Error(validation.error.errors[0].message);
-  }
-
   try {
+    inputValidation(schema, payload);
     const collection = await prisma.collection.findUnique({
       where: {
         name: payload.name,

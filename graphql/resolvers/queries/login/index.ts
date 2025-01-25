@@ -1,9 +1,10 @@
-import { z } from "zod";
-import { LoginPayload } from "./model";
 import bcrypt from "bcryptjs";
+import { z } from "zod";
 import prisma from "../../../../prisma";
 import generateToken from "../../../../utils/generateToken";
 import handleError from "../../../../utils/handleError";
+import inputValidation from "../../../../utils/inputValidation";
+import { LoginPayload } from "./model";
 
 const schema = z.object({
   username: z.string().min(1, "Username is required."),
@@ -11,13 +12,8 @@ const schema = z.object({
 });
 
 const login = async (_, payload: LoginPayload) => {
-  const validation = schema.safeParse(payload);
-
-  if (!validation.success) {
-    throw new Error(validation.error.errors[0].message);
-  }
-
   try {
+    inputValidation(schema, payload);
     const user = await prisma.user.findUnique({
       where: {
         name: payload.username,
