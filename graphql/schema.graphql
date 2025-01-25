@@ -9,4 +9,5 @@ type Query {
 
 type Mutation {
   register(username: String!, password: String!): UserToken
+  addCollection(name: String!): ID
 }
