@@ -41,11 +41,17 @@ type CollectionWithCourses {
   courses: [Course]
 }
 
+enum CourseSortOrder {
+  ASC
+  DESC
+}
+
 type Query {
   login(username: String!, password: String!): UserToken
   getCollections: [Collection]
   getCollection(id: ID!): CollectionWithCourses
   getCourse(id: ID!): Course
+  getCourses(limit: Int, sortOrder: CourseSortOrder): [Course]
 }
 
 type Mutation {
