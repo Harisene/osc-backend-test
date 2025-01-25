@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import prisma from "../../../../prisma";
 import generateToken from "../../../../utils/generateToken";
-import { RegisterPayload } from "./register.model";
+import { RegisterPayload } from "./model";
 import handleError from "../../../../utils/handleError";
 
 const schema = z.object({

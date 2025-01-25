@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LoginPayload } from "./login.model";
+import { LoginPayload } from "./model";
 import bcrypt from "bcryptjs";
 import prisma from "../../../../prisma";
 import generateToken from "../../../../utils/generateToken";
