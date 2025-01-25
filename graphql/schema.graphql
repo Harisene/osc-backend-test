@@ -1,3 +1,12 @@
+input AddCourseInput {
+  title: String!
+  description: String!
+  duration: String!
+  outcome: String!
+  collectionId: String!
+  authorId: String!
+}
+
 type UserToken {
   id: String
   token: String
@@ -10,4 +19,5 @@ type Query {
 type Mutation {
   register(username: String!, password: String!): UserToken
   addCollection(name: String!): ID
+  addCourse(courseData: AddCourseInput): ID
 }

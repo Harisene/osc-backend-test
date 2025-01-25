@@ -19,6 +19,7 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  courses   Course[]
 }
 
 model Collection {
@@ -26,4 +27,19 @@ model Collection {
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  courses   Course[]
+}
+
+model Course {
+  id           String     @id @default(uuid())
+  title        String    
+  description  String    
+  duration     String    
+  outcome      String    
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  collectionId String
+  authorId     String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
