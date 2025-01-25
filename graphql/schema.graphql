@@ -28,4 +28,5 @@ type Mutation {
   addCollection(name: String!): ID
   addCourse(courseData: AddCourseInput): ID
   updateCourse(id: ID!, courseData: updateCourseInput): ID
+  deleteCourse(id: ID!): ID
 }
