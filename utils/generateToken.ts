@@ -1,6 +1,11 @@
 import jwt from "jsonwebtoken";
 
-function generateToken(payload: object) {
+interface Payload {
+  id: string;
+  username: string;
+}
+
+function generateToken(payload: Payload) {
   return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "1h" });
 }
 
