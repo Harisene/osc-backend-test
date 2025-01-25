@@ -19,8 +19,16 @@ type UserToken {
   token: String
 }
 
+type Collection {
+  id: String
+  name: String
+  createdAt: String
+  updatedAt: String
+}
+
 type Query {
   login(username: String!, password: String!): UserToken
+  getCollections: [Collection]
 }
 
 type Mutation {
