@@ -26,9 +26,25 @@ type Collection {
   updatedAt: String
 }
 
+type Course {
+  title: String
+  description: String
+  duration: String
+  outcome: String
+}
+
+type CollectionWithCourses {
+  id: String
+  name: String
+  createdAt: String
+  updatedAt: String
+  courses: [Course]
+}
+
 type Query {
   login(username: String!, password: String!): UserToken
   getCollections: [Collection]
+  getCollection(id: ID!): CollectionWithCourses
 }
 
 type Mutation {
