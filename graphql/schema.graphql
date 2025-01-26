@@ -1,4 +1,5 @@
 directive @auth on FIELD_DEFINITION
+directive @role(roles: [String!]!) on FIELD_DEFINITION
 
 input AddCourseInput {
   title: String!
@@ -64,9 +65,15 @@ type Query {
 
 type Mutation {
   register(username: String!, password: String!, role: UserRole): UserToken
-  addCollection(name: String!): ID @auth
-  addCourse(courseData: AddCourseInput): ID @auth
-  updateCourse(id: ID!, courseData: updateCourseInput): ID @auth
-  deleteCourse(id: ID!): ID @auth
-  updateUser(id: ID!, role: UserRole!): ID @auth
+  addCollection(name: String!): ID @auth @role(roles: ["ADMIN"])
+  addCourse(courseData: AddCourseInput): ID
+    @auth
+    @role(roles: ["ADMIN", "AUTHOR"])
+  updateCourse(id: ID!, courseData: updateCourseInput): ID
+    @auth
+    @role(roles: ["ADMIN", "AUTHOR"])
+  deleteCourse(id: ID!): ID @auth @role(roles: ["ADMIN", "AUTHOR"])
+  updateUser(id: ID!, role: UserRole!): ID
+    @auth
+    @role(roles: ["ADMIN", "AUTHOR", "STUDENT"])
 }

@@ -1,13 +1,14 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 import { json } from "body-parser";
 import cors from "cors";
 import express from "express";
 import fs from "fs";
 import path from "path";
-import { Mutation, Query } from "./graphql/resolvers";
-import { makeExecutableSchema } from "@graphql-tools/schema";
 import { authDirectiveTransformer } from "./directives/authDirective";
+import { roleDirectiveTransformer } from "./directives/roleDirective";
+import { Mutation, Query } from "./graphql/resolvers";
 import extractAuthToken from "./middlewares/extractAuthToken";
 
 const startServer = async () => {
@@ -28,6 +29,7 @@ const startServer = async () => {
 
   // Apply the auth directive
   schema = authDirectiveTransformer(schema);
+  schema = roleDirectiveTransformer(schema);
 
   // Initialize Apollo Server
   const server = new ApolloServer({

@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { UserRole } from "../../../../models/common.model";
 import prisma from "../../../../prisma";
 import generateToken from "../../../../utils/generateToken";
 import handleError from "../../../../utils/handleError";
@@ -30,7 +31,11 @@ const login = async (_, payload: LoginPayload) => {
       throw new Error("Invalid password");
     }
 
-    const token = generateToken({ id: user.id, username: user.name });
+    const token = generateToken({
+      id: user.id,
+      username: user.name,
+      role: user.role as UserRole,
+    });
 
     return {
       id: user.id,

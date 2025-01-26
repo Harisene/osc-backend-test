@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { UserRole } from "../../../../models/common.model";
 import prisma from "../../../../prisma";
 import generateToken from "../../../../utils/generateToken";
 import handleError from "../../../../utils/handleError";
@@ -9,6 +10,7 @@ import { RegisterPayload } from "./model";
 const schema = z.object({
   username: z.string().min(1, "Username is required."),
   password: z.string().min(8, "Password must contain at least 8 characters"),
+  role: z.enum(["STUDENT", "AUTHOR", "ADMIN"]).optional(),
 });
 
 const register = async (_, payload: RegisterPayload) => {
@@ -34,7 +36,11 @@ const register = async (_, payload: RegisterPayload) => {
       },
     });
 
-    const token = generateToken({ id: newUser.id, username: newUser.name });
+    const token = generateToken({
+      id: newUser.id,
+      username: newUser.name,
+      role: payload.role || UserRole.STUDENT,
+    });
 
     return {
       id: newUser.id,
