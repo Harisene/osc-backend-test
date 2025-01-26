@@ -66,3 +66,7 @@ authorization: "Bearer <token>"
       updateCourse ["Admin", "Author"]
       deleteCourse ["Admin", "Author"]
       updateUser ["Admin"] // can update only role
+
+### Demo
+
+https://drive.google.com/file/d/1CrEfx_dsrPht1T14PakqL137GGWsNB5H/view?usp=sharing
