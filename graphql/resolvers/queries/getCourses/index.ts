@@ -7,6 +7,7 @@ import { GetCoursesPayload } from "./model";
 
 const schema = z.object({
   limit: z.number().optional(),
+  page: z.number().optional(),
   sortOrder: z.enum(["ASC", "DESC"]).optional(),
 });
 
@@ -16,6 +17,7 @@ const getCourses = async (_, payload: GetCoursesPayload) => {
 
     const courses = await prisma.course.findMany({
       take: payload.limit,
+      skip: payload.page ? (payload.page - 1) * payload.limit : 0,
       orderBy: {
         title: payload.sortOrder
           ? (payload.sortOrder.toLowerCase() as Prisma.SortOrder)

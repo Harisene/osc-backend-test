@@ -60,7 +60,7 @@ type Query {
   getCollections: [Collection]
   getCollection(id: ID!): CollectionWithCourses
   getCourse(id: ID!): Course
-  getCourses(limit: Int, sortOrder: CourseSortOrder): [Course]
+  getCourses(limit: Int, page: Int, sortOrder: CourseSortOrder): [Course]
 }
 
 type Mutation {

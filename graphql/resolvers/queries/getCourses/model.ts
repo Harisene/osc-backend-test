@@ -1,5 +1,6 @@
 export interface GetCoursesPayload {
   limit?: number;
+  page?: number;
   sortOrder?: SortOrder;
 }
 
