@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import prisma from "@prismaClient/index";
+import prisma from "../../../../prisma/index";
 import handleError from "@utils/handleError";
 import inputValidation from "@utils/inputValidation";
 import { z } from "zod";

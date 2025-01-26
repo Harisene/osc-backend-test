@@ -12,7 +12,6 @@
       "@graphql/*": ["./graphql/*"],
       "@middlewares/*": ["./middlewares/*"],
       "@models/*": ["./models/*"],
-      "@prismaClient/*": ["./prismaClient/*"],
       "@utils/*": ["./utils/*"]
     }
   },
