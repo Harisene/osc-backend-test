@@ -6,6 +6,7 @@ import cors from "cors";
 import express from "express";
 import fs from "fs";
 import path from "path";
+import cachedMap from "./cache";
 import { authDirectiveTransformer } from "./directives/authDirective";
 import { roleDirectiveTransformer } from "./directives/roleDirective";
 import { Mutation, Query } from "./graphql/resolvers";
@@ -48,7 +49,7 @@ const startServer = async () => {
     cors<cors.CorsRequest>(),
     json(),
     expressMiddleware(server, {
-      context: async ({ req }) => ({ token: (req as any).token }),
+      context: async ({ req }) => ({ token: (req as any).token, cachedMap }),
     })
   );
 

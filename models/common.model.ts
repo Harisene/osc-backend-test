@@ -1,8 +1,9 @@
 export interface ResolverContext {
-  user: {
+  user?: {
     id: string;
     username: string;
   };
+  cachedMap: Map<string, unknown>;
 }
 
 export enum UserRole {
