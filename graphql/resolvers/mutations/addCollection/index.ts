@@ -1,6 +1,6 @@
 import { CACHE_KEYS } from "@cache/index";
 import { ResolverContext } from "@models/common.model";
-import prisma from "../../../../prisma/index";
+import prisma from "@prismaClient/index";
 import handleError from "@utils/handleError";
 import inputValidation from "@utils/inputValidation";
 import { z } from "zod";

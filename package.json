@@ -38,6 +38,7 @@
     "@graphql": "./graphql",
     "@middlewares": "./middlewares",
     "@models": "./models",
+    "@prismaClient": "./prisma",
     "@utils": "./utils"
   }
 }

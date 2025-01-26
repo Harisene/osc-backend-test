@@ -1,5 +1,5 @@
 import { UserRole } from "@models/common.model";
-import prisma from "../../../../prisma/index";
+import prisma from "@prismaClient/index";
 import generateToken from "@utils/generateToken";
 import handleError from "@utils/handleError";
 import inputValidation from "@utils/inputValidation";

@@ -1,8 +1,8 @@
 import { ResolverContext, UserRole } from "@models/common.model";
+import prisma from "@prismaClient/index";
 import handleError from "@utils/handleError";
 import inputValidation from "@utils/inputValidation";
 import { z } from "zod";
-import prisma from "../../../../prisma/index";
 import { UpdateCoursePayload } from "./model";
 
 const schema = z.object({
