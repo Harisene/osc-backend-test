@@ -3,6 +3,7 @@ import addCourse from "./mutations/addCourse";
 import deleteCourse from "./mutations/deleteCourse";
 import register from "./mutations/register";
 import updateCourse from "./mutations/updateCourse";
+import updateUser from "./mutations/updateUser";
 import getCollection from "./queries/getCollection";
 import getCollections from "./queries/getCollections";
 import getCourse from "./queries/getCourse";
@@ -15,6 +16,7 @@ const Mutation = {
   addCourse,
   updateCourse,
   deleteCourse,
+  updateUser,
 };
 
 const Query = {

@@ -30,6 +30,7 @@ const register = async (_, payload: RegisterPayload) => {
       data: {
         name: payload.username,
         password: hashedPassword,
+        role: payload.role,
       },
     });
 

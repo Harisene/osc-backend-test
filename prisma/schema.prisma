@@ -17,6 +17,7 @@ model User {
   id        String   @id @default(uuid())
   name      String   @unique
   password  String
+  role      UserRole @default(STUDENT)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   courses   Course[]
@@ -32,14 +33,20 @@ model Collection {
 
 model Course {
   id           String     @id @default(uuid())
-  title        String    
-  description  String    
-  duration     String    
-  outcome      String    
+  title        String
+  description  String
+  duration     String
+  outcome      String
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   collectionId String
   authorId     String
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   user         User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+enum UserRole {
+  STUDENT
+  AUTHOR
+  ADMIN
 }

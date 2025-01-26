@@ -48,6 +48,12 @@ enum CourseSortOrder {
   DESC
 }
 
+enum UserRole {
+  STUDENT
+  AUTHOR
+  ADMIN
+}
+
 type Query {
   login(username: String!, password: String!): UserToken
   getCollections: [Collection]
@@ -57,9 +63,10 @@ type Query {
 }
 
 type Mutation {
-  register(username: String!, password: String!): UserToken
+  register(username: String!, password: String!, role: UserRole): UserToken
   addCollection(name: String!): ID @auth
   addCourse(courseData: AddCourseInput): ID @auth
   updateCourse(id: ID!, courseData: updateCourseInput): ID @auth
   deleteCourse(id: ID!): ID @auth
+  updateUser(id: ID!, role: UserRole!): ID @auth
 }

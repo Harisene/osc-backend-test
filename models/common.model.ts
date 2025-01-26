@@ -4,3 +4,9 @@ export interface ResolverContext {
     username: string;
   };
 }
+
+export enum UserRole {
+  STUDENT = "STUDENT",
+  AUTHOR = "AUTHOR",
+  ADMIN = "ADMIN",
+}
