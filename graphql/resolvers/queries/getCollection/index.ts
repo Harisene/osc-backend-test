@@ -1,7 +1,7 @@
+import prisma from "@prismaClient/index";
+import handleError from "@utils/handleError";
+import inputValidation from "@utils/inputValidation";
 import { z } from "zod";
-import prisma from "../../../../prisma";
-import handleError from "../../../../utils/handleError";
-import inputValidation from "../../../../utils/inputValidation";
 import { GetCollectionPayload } from "./model";
 
 const schema = z.object({

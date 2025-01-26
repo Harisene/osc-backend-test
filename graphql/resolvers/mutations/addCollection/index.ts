@@ -1,9 +1,9 @@
+import { CACHE_KEYS } from "@cache/index";
+import { ResolverContext } from "@models/common.model";
+import prisma from "@prismaClient/index";
+import handleError from "@utils/handleError";
+import inputValidation from "@utils/inputValidation";
 import { z } from "zod";
-import { CACHE_KEYS } from "../../../../cache";
-import { ResolverContext } from "../../../../models/common.model";
-import prisma from "../../../../prisma";
-import handleError from "../../../../utils/handleError";
-import inputValidation from "../../../../utils/inputValidation";
 import { AddCollectionPayload } from "./model";
 
 const schema = z.object({

@@ -1,7 +1,7 @@
-import { CACHE_KEYS } from "../../../../cache";
-import { ResolverContext } from "../../../../models/common.model";
-import prisma from "../../../../prisma";
-import handleError from "../../../../utils/handleError";
+import { CACHE_KEYS } from "@cache/index";
+import { ResolverContext } from "@models/common.model";
+import prisma from "@prismaClient/index";
+import handleError from "@utils/handleError";
 
 const getCollections = async (_, __, context: ResolverContext) => {
   try {

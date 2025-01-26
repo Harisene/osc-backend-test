@@ -1,5 +1,5 @@
+import { UserRole } from "@models/common.model";
 import jwt from "jsonwebtoken";
-import { UserRole } from "../models/common.model";
 
 interface Payload {
   id: string;

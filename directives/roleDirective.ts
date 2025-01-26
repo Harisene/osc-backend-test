@@ -1,7 +1,7 @@
 import { getDirective, MapperKind, mapSchema } from "@graphql-tools/utils";
+import { UserRole } from "@models/common.model";
 import { defaultFieldResolver, GraphQLSchema } from "graphql";
 import jwt from "jsonwebtoken";
-import { UserRole } from "../models/common.model";
 
 export function roleDirectiveTransformer(schema: GraphQLSchema): GraphQLSchema {
   return mapSchema(schema, {

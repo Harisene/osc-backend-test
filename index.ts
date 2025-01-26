@@ -5,6 +5,7 @@ import { json } from "body-parser";
 import cors from "cors";
 import express from "express";
 import fs from "fs";
+import "module-alias/register";
 import path from "path";
 import cachedMap from "./cache";
 import { authDirectiveTransformer } from "./directives/authDirective";
@@ -43,7 +44,6 @@ const startServer = async () => {
 
   // Middlewares
   app.use(extractAuthToken);
-
   app.use(
     "/graphql",
     cors<cors.CorsRequest>(),

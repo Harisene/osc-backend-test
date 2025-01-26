@@ -1,10 +1,10 @@
+import { UserRole } from "@models/common.model";
+import prisma from "@prismaClient/index";
+import generateToken from "@utils/generateToken";
+import handleError from "@utils/handleError";
+import inputValidation from "@utils/inputValidation";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { UserRole } from "../../../../models/common.model";
-import prisma from "../../../../prisma";
-import generateToken from "../../../../utils/generateToken";
-import handleError from "../../../../utils/handleError";
-import inputValidation from "../../../../utils/inputValidation";
 import { LoginPayload } from "./model";
 
 const schema = z.object({
