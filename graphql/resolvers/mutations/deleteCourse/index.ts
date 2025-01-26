@@ -1,8 +1,8 @@
-import { ResolverContext } from "@models/common.model";
-import prisma from "../../../../prisma/index";
+import { ResolverContext, UserRole } from "@models/common.model";
 import handleError from "@utils/handleError";
 import inputValidation from "@utils/inputValidation";
 import { z } from "zod";
+import prisma from "../../../../prisma/index";
 import { DeleteCoursePayload } from "./model";
 
 const schema = z.object({
@@ -15,6 +15,13 @@ const deleteCourse = async (
   context: ResolverContext
 ) => {
   try {
+    inputValidation(schema, payload);
+
+    if (context.user?.role === UserRole.ADMIN) {
+      await performCourseDelete(payload);
+      return payload.id;
+    }
+
     const course = await prisma.course.findUnique({
       where: {
         id: payload.id,
@@ -24,22 +31,30 @@ const deleteCourse = async (
       },
     });
 
-    if (!course || course.authorId !== context.user.id) {
-      throw new Error("UnAuthorized: User not allowed to delete this course.");
+    if (!course) {
+      throw new Error(`NotFound: Course ${payload.id} not found`);
     }
 
-    inputValidation(schema, payload);
+    if (course.authorId !== context.user.id) {
+      throw new Error(
+        "UnAuthorized: User not allowed to delete other authors' courses."
+      );
+    }
 
-    await prisma.course.delete({
-      where: {
-        id: payload.id,
-      },
-    });
+    await performCourseDelete(payload);
 
     return payload.id;
   } catch (e) {
     handleError(e);
   }
+};
+
+const performCourseDelete = async (payload: DeleteCoursePayload) => {
+  return await prisma.course.delete({
+    where: {
+      id: payload.id,
+    },
+  });
 };
 
 export default deleteCourse;

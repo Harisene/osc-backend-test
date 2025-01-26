@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
-import prisma from "../../../../prisma/index";
 import handleError from "@utils/handleError";
 import inputValidation from "@utils/inputValidation";
 import { z } from "zod";
+import prisma from "../../../../prisma/index";
 import { GetCoursesPayload } from "./model";
 
 const schema = z.object({
@@ -17,7 +17,9 @@ const getCourses = async (_, payload: GetCoursesPayload) => {
     const courses = await prisma.course.findMany({
       take: payload.limit,
       orderBy: {
-        title: payload.sortOrder.toLowerCase() as Prisma.SortOrder,
+        title: payload.sortOrder
+          ? (payload.sortOrder.toLowerCase() as Prisma.SortOrder)
+          : "asc",
       },
     });
 

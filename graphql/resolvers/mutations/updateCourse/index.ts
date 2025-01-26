@@ -1,8 +1,8 @@
-import { ResolverContext } from "@models/common.model";
-import prisma from "../../../../prisma/index";
+import { ResolverContext, UserRole } from "@models/common.model";
 import handleError from "@utils/handleError";
 import inputValidation from "@utils/inputValidation";
 import { z } from "zod";
+import prisma from "../../../../prisma/index";
 import { UpdateCoursePayload } from "./model";
 
 const schema = z.object({
@@ -25,6 +25,13 @@ const updateCourse = async (
   context: ResolverContext
 ) => {
   try {
+    inputValidation(schema, data);
+
+    if (context.user?.role === UserRole.ADMIN) {
+      await performUpdateCourse(data);
+      return data.id;
+    }
+
     const course = await prisma.course.findUnique({
       where: {
         id: data.id,
@@ -34,25 +41,31 @@ const updateCourse = async (
       },
     });
 
-    if (!course || course.authorId !== context.user.id) {
+    if (!course) {
+      throw new Error(`NotFound: Course ${data.id} not found`);
+    }
+
+    if (course.authorId !== context.user.id) {
       throw new Error("UnAuthorized: User not allowed to update this course.");
     }
 
-    inputValidation(schema, data);
-
-    await prisma.course.update({
-      where: {
-        id: data.id,
-      },
-      data: {
-        ...data.courseData,
-      },
-    });
+    await performUpdateCourse(data);
 
     return data.id;
   } catch (e) {
     handleError(e);
   }
+};
+
+const performUpdateCourse = async (data: UpdateCoursePayload) => {
+  return await prisma.course.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      ...data.courseData,
+    },
+  });
 };
 
 export default updateCourse;

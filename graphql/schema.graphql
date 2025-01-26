@@ -73,7 +73,5 @@ type Mutation {
     @auth
     @role(roles: ["ADMIN", "AUTHOR"])
   deleteCourse(id: ID!): ID @auth @role(roles: ["ADMIN", "AUTHOR"])
-  updateUser(id: ID!, role: UserRole!): ID
-    @auth
-    @role(roles: ["ADMIN", "AUTHOR", "STUDENT"])
+  updateUser(id: ID!, role: UserRole!): ID @auth @role(roles: ["ADMIN"])
 }

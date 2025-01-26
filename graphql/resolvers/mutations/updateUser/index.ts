@@ -1,8 +1,8 @@
-import { ResolverContext } from "@models/common.model";
-import prisma from "../../../../prisma/index";
+import { ResolverContext, UserRole } from "@models/common.model";
 import handleError from "@utils/handleError";
 import inputValidation from "@utils/inputValidation";
 import { z } from "zod";
+import prisma from "../../../../prisma/index";
 import { UpdateUserPayload } from "./model";
 
 const schema = z.object({
@@ -16,6 +16,12 @@ const updateUser = async (
   context: ResolverContext
 ) => {
   try {
+    inputValidation(schema, payload);
+    if (context.user.role === UserRole.ADMIN) {
+      await performUserUpdate(payload);
+      return payload.id;
+    }
+
     const user = await prisma.user.findUnique({
       where: {
         id: payload.id,
@@ -25,27 +31,30 @@ const updateUser = async (
       },
     });
 
-    if (!user || user.id !== context.user.id) {
+    if (!user) {
+      throw new Error(`NotFound: User ${payload.id} not found to update.`);
+    }
+
+    if (user.id !== context.user.id) {
       throw new Error(
         "UnAuthorized: User not allowed to update another user data."
       );
     }
-
-    inputValidation(schema, payload);
-
-    await prisma.user.update({
-      where: {
-        id: payload.id,
-      },
-      data: {
-        ...payload,
-      },
-    });
-
     return payload.id;
   } catch (e) {
     handleError(e);
   }
+};
+
+const performUserUpdate = async (payload: UpdateUserPayload) => {
+  return await prisma.user.update({
+    where: {
+      id: payload.id,
+    },
+    data: {
+      ...payload,
+    },
+  });
 };
 
 export default updateUser;

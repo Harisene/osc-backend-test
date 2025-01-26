@@ -22,7 +22,7 @@ const login = async (_, payload: LoginPayload) => {
     });
 
     if (!user) {
-      throw new Error("User does not exists");
+      throw new Error("User does not exist");
     }
 
     const validPassword = await bcrypt.compare(payload.password, user.password);
