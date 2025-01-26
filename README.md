@@ -39,7 +39,7 @@ npm run dev
 **6. Test**
 Now you can start working with the server. Go to http://localhost:3000/graphql for Graphql GUI.
 
-###Special Notes
+### Special Notes
 
 - Some of the mutations are protected. Therefore, need to pass user token in the header with the request as shown below. Protected mutations are listed below.
 
@@ -57,8 +57,8 @@ authorization: "Bearer <token>"
 
 - Some of the mutations have role base authorization. Check below list for role based mutations.
 
-  addCollection ["Admin"]
-  addCourse ["Admin", "Author"]
-  updateCourse ["Admin", "Author"]
-  deleteCourse ["Admin", "Author"]
-  updateUser ["Admin"] // can update only role
+      addCollection ["Admin"]
+      addCourse ["Admin", "Author"]
+      updateCourse ["Admin", "Author"]
+      deleteCourse ["Admin", "Author"]
+      updateUser ["Admin"] // can update only role
