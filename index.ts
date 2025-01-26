@@ -1,11 +1,14 @@
-import express from "express";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { json } from "body-parser";
 import cors from "cors";
-import { Mutation, Query } from "./graphql/resolvers";
+import express from "express";
 import fs from "fs";
 import path from "path";
+import { Mutation, Query } from "./graphql/resolvers";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { authDirectiveTransformer } from "./directives/authDirective";
+import extractAuthToken from "./middlewares/extractAuthToken";
 
 const startServer = async () => {
   // Load schema from schema.graphql
@@ -14,8 +17,8 @@ const startServer = async () => {
     "utf-8"
   );
 
-  // Initialize Apollo Server
-  const server = new ApolloServer({
+  // Create the base schema
+  let schema = makeExecutableSchema({
     typeDefs,
     resolvers: {
       Query,
@@ -23,16 +26,28 @@ const startServer = async () => {
     },
   });
 
+  // Apply the auth directive
+  schema = authDirectiveTransformer(schema);
+
+  // Initialize Apollo Server
+  const server = new ApolloServer({
+    schema,
+  });
+
   await server.start();
 
   const app = express();
 
-  // Middleware for Apollo Server
+  // Middlewares
+  app.use(extractAuthToken);
+
   app.use(
     "/graphql",
     cors<cors.CorsRequest>(),
     json(),
-    expressMiddleware(server)
+    expressMiddleware(server, {
+      context: async ({ req }) => ({ token: (req as any).token }),
+    })
   );
 
   const PORT = 3000;

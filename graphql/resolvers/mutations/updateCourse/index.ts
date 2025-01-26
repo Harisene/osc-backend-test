@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ResolverContext } from "../../../../models/common.model";
 import prisma from "../../../../prisma";
 import handleError from "../../../../utils/handleError";
 import inputValidation from "../../../../utils/inputValidation";
@@ -18,8 +19,25 @@ const schema = z.object({
     }),
 });
 
-const updateCourse = async (_, data: UpdateCoursePayload) => {
+const updateCourse = async (
+  _,
+  data: UpdateCoursePayload,
+  context: ResolverContext
+) => {
   try {
+    const course = await prisma.course.findUnique({
+      where: {
+        id: data.id,
+      },
+      select: {
+        authorId: true,
+      },
+    });
+
+    if (!course || course.authorId !== context.user.id) {
+      throw new Error("UnAuthorized: User not allowed to update this course.");
+    }
+
     inputValidation(schema, data);
 
     await prisma.course.update({
